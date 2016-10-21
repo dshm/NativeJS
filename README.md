@@ -130,6 +130,86 @@ el.closest(selector)
       return null;
     };
   }
-
 })();
+```
+
+__1.7 Closest__
+
+Получить родителей каждого элемента в текущем сете совпавших элементов, но не включая элемент, совпавший с селектором, узел DOM'а, или объект jQuery.
+
+___jQuery___
+
+```javascript
+$el.parentsUntil(selector, filter)
+```
+
+___Native___
+
+```javascript
+function parentsUntil(el, selector, filter) {
+  const result = [];
+  const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+
+  // Совпадать начиная от родителя
+  el = el.parentElement;
+  while (el && !matchesSelector.call(el, selector)) {
+    if (!filter) {
+      result.push(el);
+    } else {
+      if (matchesSelector.call(el, filter)) {
+        result.push(el);
+      }
+    }
+    el = el.parentElement;
+  }
+  return result;
+}
+```
+
+---
+
+### 2.Манипуляция с свойствами и атрибутами
+
+__2.1 Input/Textarea__
+
+___jQuery___
+
+```javascript
+$el.val()
+```
+
+___Native___
+
+```javascript
+el.value
+```
+
+__2.2 Получить индекс e.currentTarget между .radio__
+
+___jQuery___
+
+```javascript
+$(e.currentTarget).index('.radio')
+```
+
+___Native___
+
+```javascript
+[].indexOf.call(document.querySelectorAll('.radio'), e.currentTarget);
+```
+
+__2.3 Получить значение атрибута и изменение его__
+
+___jQuery___
+
+```javascript
+$el.attr('foo')
+$el.attr('foo', 'bar')
+```
+
+___Native___
+
+```javascript
+el.getAttribute('foo')
+el.setAttribute('foo', 'bar')
 ```
