@@ -1,4 +1,4 @@
-# VanillaJS
+# Native JavaScript
 
 ### 1. Query Selector
 
