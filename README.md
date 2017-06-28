@@ -1,33 +1,33 @@
 # Native JavaScript
 
-### 1. Query Selector
+### Query Selector
 
-__1.1 Поиск по селектору (```.class, #id, a[target=_blank] ...```)__
+__Поиск по селектору (```.class, #id, a[target=_blank] ...```)__
 
 ```javascript
 document.querySelectorAll('selector'); // возвращает массив элементов
 document.querySelector('selector');    // возвращает первый найденный элемент
 ```
 
-__1.2 Запрос по классу (```.class```)__
+__Запрос по классу (```.class```)__
 
 ```javascript
 document.getElementsByClassName('.class');   // возвращает массив элементов
 ```
 
-__1.3 Запрос по id (```#class```)__
+__Запрос по id (```#class```)__
 
 ```javascript
 document.getElementById('id')   // возвращает первый найденный элемент
 ```
 
-__1.4 Найти среди потомков__
+__Найти среди потомков__
 
 ```javascript
 el.querySelectorAll('element')
 ```
 
-__1.5 Родственные/Предыдущие/Следующие Элементы__
+__Родственные/Предыдущие/Следующие Элементы__
 
   + Родственные элементы
 
@@ -47,7 +47,7 @@ __1.5 Родственные/Предыдущие/Следующие Элеме�
   el.nextElementSibling
   ```
 
-__1.6 Closest__
+__Closest__
 
 Возвращает первый совпавший элемент по предоставленному селектору, обходя от текущего элементы до документа.
 
@@ -72,7 +72,7 @@ el.closest(selector)
 })();
 ```
 
-__1.7 Родители до__
+__Родители до__
 
 Получить родителей каждого элемента в текущем сете совпавших элементов, но не включая элемент, совпавший с селектором, узел DOM'а.
 
@@ -99,25 +99,120 @@ function parentsUntil(el, selector, filter) {
 
 ---
 
-### 2.Манипуляция с свойствами и атрибутами
+### Манипуляция с свойствами и атрибутами
 
-__2.1 Input/Textarea__
+__Input/Textarea__
 
 ```javascript
 el.value
 ```
 
-__2.2 Получить индекс e.currentTarget между .radio__
+__Получить индекс e.currentTarget между .radio__
 
 ```javascript
 [].indexOf.call(document.querySelectorAll('.radio'), e.currentTarget);
 ```
 
-__2.3 Получить значение атрибута и изменение его__
+__Получить значение атрибута и изменение его__
 
 ```javascript
 el.getAttribute('foo')
 el.setAttribute('foo', 'bar')
 ```
 
-### 2. СSS and Style
+### СSS и операция с классами
+
+__Получить стили__
+
+```javascript
+  // ЗАМЕТКА: Известная ошибка, возвращает 'auto' если значение стиля 'auto'
+  const win = el.ownerDocument.defaultView;
+  // null означает не возвращать псевдостили
+  win.getComputedStyle(el, null).color;
+```
+
+__Присвоение style__
+
+```javascript
+  el.style.color = '#f01';
+```
+
+__Добавить/Удалить/Переключить/Проверить на сушествование class__
+
+```javascript
+  el.classList.add(className);
+  el.classList.remove(className);
+  el.classList.toggle(className);
+  el.classList.contains(className);
+```
+
+### Ширина и Высота
+
+__Ширина окна__
+```javascript
+  // вместе с полосой прокрутки
+  window.document.documentElement.clientHeight;
+
+  // без полосы прокрутки, ведет себя как jQuery
+  window.innerHeight;
+```
+
+__Высота окна__
+
+```javascript
+const body = document.body;
+const html = document.documentElement;
+const height = Math.max(
+  body.offsetHeight,
+  body.scrollHeight,
+  html.clientHeight,
+  html.offsetHeight,å
+  html.scrollHeight
+);
+```
+
+__Высота элемента__
+
+```javascript
+  function getHeight(el) {
+    const styles = window.getComputedStyle(el);
+    const height = el.offsetHeight;
+    const borderTopWidth = parseFloat(styles.borderTopWidth);
+    const borderBottomWidth = parseFloat(styles.borderBottomWidth);
+    const paddingTop = parseFloat(styles.paddingTop);
+    const paddingBottom = parseFloat(styles.paddingBottom);
+    return height - borderBottomWidth - borderTopWidth - paddingTop - paddingBottom;
+  }
+
+  // С точностью до целого числа（когда `border-box`, это `height - border`; когда `content-box`, это `height + padding`）
+  el.clientHeight;
+
+  // С точностью до десятых（когда `border-box`, это `height`; когда `content-box`, это `height + padding + border`）
+  el.getBoundingClientRect().height;
+```
+
+### Позиция и смещение
+
+__Получить текущие координаты элемента относительно смещения его родителя__
+
+```javascript
+  { left: el.offsetLeft, top: el.offsetTop }
+```
+
+__Получить текущие координаты элемента относительно документа__
+
+```javascript
+  function getOffset (el) {
+  const box = el.getBoundingClientRect();
+    return {
+      top: box.top + window.pageYOffset - document.documentElement.clientTop,
+      left: box.left + window.pageXOffset - document.documentElement.clientLeft
+    };
+  }
+```
+
+__Позициия скролла__
+
+```javascript
+  (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+```
