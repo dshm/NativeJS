@@ -9,13 +9,13 @@ document.querySelectorAll('selector'); // возвращает массив эл
 document.querySelector('selector');    // возвращает первый найденный элемент
 ```
 
-__Запрос по классу (```.class```)__
+__Найти по классу (```.class```)__
 
 ```javascript
 document.getElementsByClassName('.class');   // возвращает массив элементов
 ```
 
-__Запрос по id (```#class```)__
+__Найти по id (```#class```)__
 
 ```javascript
 document.getElementById('id')   // возвращает первый найденный элемент
@@ -32,24 +32,30 @@ __Родственные/Предыдущие/Следующие Элемент�
   + Родственные элементы
 
   ```javascript
-  [].filter.call(el.parentNode.children, function(child) {
+  Array.prototype.filter.call(el.parentNode.children, function(child) {
     return child !== el;
   });
   ```
-  + Предыдущие элементы
+  + Предыдущий элементы
 
   ```javascript
   el.previousElementSibling
   ```
-  + Следующие элементы
+  + Следующий элементы
 
   ```javascript
   el.nextElementSibling
   ```
 
+  + Непосредтсвенный родитель элементы
+
+  ```javascript
+  el.parentNode
+  ```
+
 __Closest__
 
-Возвращает первый совпавший элемент по предоставленному селектору, обходя от текущего элементы до документа.
+Возвращает первый совпавший элемент по предоставленному селектору, обходя от текущего элементы до документа вверх.
 
 ```javascript
 el.closest(selector)
@@ -99,6 +105,70 @@ function parentsUntil(el, selector, filter) {
 
 ---
 
+### Манипуляция с DOM узлами
+
+__Перемещение/вставка элементов__
+
++ Вставка дочернего элемента в конец родителя
+
+```javascript
+parent.appendChild(el);
+```
+
++ Вставка дочернего элемента в начало родителя
+
+```javascript
+parent.insertBefore(el, parent.firstChild);
+```
+
++ insertAdjacent
+
+Метод insertAdjacentHTML позволяет вставлять произвольный HTML в любое место документа, в том числе и между узлами!
+
+```javascript
+elem.insertAdjacentHTML(where, html);
+```
+
+html cтрока HTML, которую нужно вставить
+where - Куда по отношению к elem вставлять строку. Всего четыре варианта:
+
+1. `beforeBegin` -- перед `elem`.
+2. `afterBegin` -- внутрь `elem`, в самое начало.
+3. `beforeEnd` -- внутрь `elem`, в конец.
+4. `afterEnd` -- после `elem`.
+
+__Склонировать элемент__
+
+```javascript
+el.cloneNode(true);
+```
+
+__Удалить элемент__
+
+```javascript
+    el.remove(); // не поддерживаеться в IE
+    el.parentNode.removeChild(el); // IE 8+
+```
+
+__Получить внутренний HTML__
+
+```javascript
+el.innerHTML
+```
+
+__Получить серриализированный elem HTML__
+
+```javascript
+element.outerHTML
+```
+
+__Получить текстовый узел__
+
+```javascript
+el.textContent
+```
+---
+
 ### Манипуляция с свойствами и атрибутами
 
 __Input/Textarea__
@@ -107,10 +177,10 @@ __Input/Textarea__
 el.value
 ```
 
-__Получить индекс e.currentTarget между .radio__
+__Получить индекс e.currentTarget среди тех же елементов
 
 ```javascript
-[].indexOf.call(document.querySelectorAll('.radio'), e.currentTarget);
+Array.prototype.indexOf.call(document.querySelectorAll('element'), e.currentTarget);
 ```
 
 __Получить значение атрибута и изменение его__
@@ -125,10 +195,7 @@ el.setAttribute('foo', 'bar')
 __Получить стили__
 
 ```javascript
-  // ЗАМЕТКА: Известная ошибка, возвращает 'auto' если значение стиля 'auto'
-  const win = el.ownerDocument.defaultView;
-  // null означает не возвращать псевдостили
-  win.getComputedStyle(el, null).color;
+  getComputedStyle(el)[ruleName];
 ```
 
 __Присвоение style__
@@ -215,4 +282,69 @@ __Позициия скролла__
 
 ```javascript
   (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+```
+
+### Events
+
++ On
+
+```javascript
+el.addEventListener(eventName, eventHandler);
+```
+
++ Off
+
+```javascript
+el.removeEventListener(eventName, eventHandler);
+```
++ Document ready
+```javascript
+ document.addEventListener('DOMContentLoaded', fn);
+ ```
+
++ Trigger Custom Event
+
+```javascript
+ const event = new CustomEvent('my-event', {detail: {some: 'data'}});
+ el.dispatchEvent(event);
+```
+
++ Trigger Native Event
+
+```javascript
+const event = document.createEvent('HTMLEvents');
+event.initEvent('change', true, false);
+el.dispatchEvent(event);
+```
+
+### Утилиты 
+
++ Trim
+
+```javascript
+string.trim();
+```
+
++ isArray
+
+```javascript
+Array.isArray(array);
+```
+
++ Проверка на содержание непосредственно child элемента
+
+```javascript
+el !== child && el.contains(child);
+```
+
++ Проверка на содержание selector элемента
+
+```javascript
+el.querySelector(selector) !== null
+```
+
++ Фильтрация
+
+```javascript
+Array.prototype.filter.call(document.querySelectorAll(selector), filterFn);
 ```
