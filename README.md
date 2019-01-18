@@ -248,7 +248,9 @@ const height = Math.max(
 );
 ```
 
+
 **Element height**
+
 
 ```javascript
 function getHeight(el) {
