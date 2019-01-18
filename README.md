@@ -2,92 +2,97 @@
 
 ### Query Selector
 
-__Поиск по селектору (```.class, #id, a[target=_blank] ...```)__
+**Search by selector (`.class, #id, a[target=_blank] ...`)**
 
 ```javascript
-document.querySelectorAll('selector'); // возвращает массив элементов
-document.querySelector('selector');    // возвращает первый найденный элемент
+document.querySelectorAll("selector"); // returns an array of elements
+document.querySelector("selector"); // returns the first found element
 ```
 
-__Найти по классу (```.class```)__
+**Find by className (`.class`)**
 
 ```javascript
-document.getElementsByClassName('.class');   // возвращает массив элементов
+document.getElementsByClassName(".class"); // returns an array of elements
 ```
 
-__Найти по id (```#class```)__
+**Find by ID (`#class`)**
 
 ```javascript
-document.getElementById('id')   // возвращает первый найденный элемент
+document.getElementById("id"); // returns the first found item
 ```
 
-__Найти среди потомков__
+**Find among descendants**
 
 ```javascript
-el.querySelectorAll('element')
+el.querySelectorAll("element");
 ```
 
-__Родственные/Предыдущие/Следующие Элементы__
+**Related / Previous / Next items**
 
-  + Родственные элементы
-
-  ```javascript
-  Array.prototype.filter.call(el.parentNode.children, function(child) {
-    return child !== el;
-  });
-  ```
-  + Предыдущий элементы
-
-  ```javascript
-  el.previousElementSibling
-  ```
-  + Следующий элементы
-
-  ```javascript
-  el.nextElementSibling
-  ```
-
-  + Непосредтсвенный родитель элементы
-
-  ```javascript
-  el.parentNode
-  ```
-
-__Closest__
-
-Возвращает первый совпавший элемент по предоставленному селектору, обходя от текущего элементы до документа вверх.
+- Related items
 
 ```javascript
-el.closest(selector)
+Array.prototype.filter.call(el.parentNode.children, function(child) {
+  return child !== el;
+});
+```
 
-// IE и Edge
-(function() {
-  // проверяем поддержку
-  if (!Element.prototype.closest) {
-    // реализуем
-    Element.prototype.closest = function(css) {
-      var node = this;
+- Previous item
 
-      while (node) {
-        if (node.matches(css)) return node;
-        else node = node.parentElement;
-      }
-      return null;
-    };
+```javascript
+el.previousElementSibling;
+```
+
+- Next item
+
+```javascript
+el.nextElementSibling;
+```
+
+- Parent item
+
+```javascript
+el.parentNode;
+```
+
+**Closest**
+
+Returns the first matched element on the provided selector, bypassing from the current elements to the document up.
+
+```javascript
+el.closest(selector)(
+  // IE и Edge
+  function() {
+    // check support
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function(css) {
+        var node = this;
+
+        while (node) {
+          if (node.matches(css)) return node;
+          else node = node.parentElement;
+        }
+        return null;
+      };
+    }
   }
-})();
+)();
 ```
 
-__Родители до__
+**Parents to**
 
-Получить родителей каждого элемента в текущем сете совпавших элементов, но не включая элемент, совпавший с селектором, узел DOM'а.
+Get the parents of each element in the current set of matched elements, but not including the element that matched the selector, the DOM node.
 
 ```javascript
 function parentsUntil(el, selector, filter) {
   const result = [];
-  const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+  const matchesSelector =
+    el.matches ||
+    el.webkitMatchesSelector ||
+    el.mozMatchesSelector ||
+    el.msMatchesSelector;
 
-  // Совпадать начиная от родителя
+  // Match starting from parent
   el = el.parentElement;
   while (el && !matchesSelector.call(el, selector)) {
     if (!filter) {
@@ -105,23 +110,23 @@ function parentsUntil(el, selector, filter) {
 
 ---
 
-### Манипуляция с DOM узлами
+### DOM node manipulation
 
-__Перемещение/вставка элементов__
+**Перемещение/вставка элементов**
 
-+ Вставка дочернего элемента в конец родителя
+- Вставка дочернего элемента в конец родителя
 
 ```javascript
 parent.appendChild(el);
 ```
 
-+ Вставка дочернего элемента в начало родителя
+- Вставка дочернего элемента в начало родителя
 
 ```javascript
 parent.insertBefore(el, parent.firstChild);
 ```
 
-+ insertAdjacent
+- insertAdjacent
 
 Метод insertAdjacentHTML позволяет вставлять произвольный HTML в любое место документа, в том числе и между узлами!
 
@@ -137,94 +142,99 @@ where - Куда по отношению к elem вставлять строку
 3. `beforeEnd` -- внутрь `elem`, в конец.
 4. `afterEnd` -- после `elem`.
 
-__Склонировать элемент__
+**Склонировать элемент**
 
 ```javascript
 el.cloneNode(true);
 ```
 
-__Удалить элемент__
+**Удалить элемент**
 
 ```javascript
-    el.remove(); // не поддерживаеться в IE
-    el.parentNode.removeChild(el); // IE 8+
+el.remove(); // не поддерживаеться в IE
+el.parentNode.removeChild(el); // IE 8+
 ```
 
-__Получить внутренний HTML__
+**Получить внутренний HTML**
 
 ```javascript
-el.innerHTML
+el.innerHTML;
 ```
 
-__Получить серриализированный elem HTML__
+**Получить серриализированный elem HTML**
 
 ```javascript
-element.outerHTML
+element.outerHTML;
 ```
 
-__Получить текстовый узел__
+**Получить текстовый узел**
 
 ```javascript
-el.textContent
+el.textContent;
 ```
+
 ---
 
 ### Манипуляция с свойствами и атрибутами
 
-__Input/Textarea__
+**Input/Textarea**
 
 ```javascript
-el.value
+el.value;
 ```
 
-__Получить индекс e.currentTarget среди тех же елементов
+\_\_Получить индекс e.currentTarget среди тех же елементов
 
 ```javascript
-Array.prototype.indexOf.call(document.querySelectorAll('element'), e.currentTarget);
+Array.prototype.indexOf.call(
+  document.querySelectorAll("element"),
+  e.currentTarget
+);
 ```
 
-__Получить значение атрибута и изменение его__
+**Получить значение атрибута и изменение его**
 
 ```javascript
-el.getAttribute('foo')
-el.setAttribute('foo', 'bar')
+el.getAttribute("foo");
+el.setAttribute("foo", "bar");
 ```
 
 ### СSS и операция с классами
 
-__Получить стили__
+**Получить стили**
 
 ```javascript
-  getComputedStyle(el)[ruleName];
+getComputedStyle(el)[ruleName];
 ```
 
-__Присвоение style__
+**Присвоение style**
 
 ```javascript
-  el.style.color = '#f01';
+el.style.color = "#f01";
 ```
 
-__Добавить/Удалить/Переключить/Проверить на сушествование class__
+**Добавить/Удалить/Переключить/Проверить на сушествование class**
 
 ```javascript
-  el.classList.add(className);
-  el.classList.remove(className);
-  el.classList.toggle(className);
-  el.classList.contains(className);
+el.classList.add(className);
+el.classList.remove(className);
+el.classList.toggle(className);
+el.classList.contains(className);
 ```
 
 ### Ширина и Высота
 
-__Ширина окна__
-```javascript
-  // вместе с полосой прокрутки
-  window.document.documentElement.clientHeight;
+**Ширина окна**
 
-  // без полосы прокрутки, ведет себя как jQuery
-  window.innerHeight;
+```javascript
+// вместе с полосой прокрутки
+window.document.documentElement.clientHeight;
+
+// без полосы прокрутки, ведет себя как jQuery
+window.innerHeight;
 ```
 
-__Высота окна__
+**Высота окна**
 
 ```javascript
 const body = document.body;
@@ -238,112 +248,117 @@ const height = Math.max(
 );
 ```
 
-__Высота элемента__
+**Высота элемента**
 
 ```javascript
-  function getHeight(el) {
-    const styles = window.getComputedStyle(el);
-    const height = el.offsetHeight;
-    const borderTopWidth = parseFloat(styles.borderTopWidth);
-    const borderBottomWidth = parseFloat(styles.borderBottomWidth);
-    const paddingTop = parseFloat(styles.paddingTop);
-    const paddingBottom = parseFloat(styles.paddingBottom);
-    return height - borderBottomWidth - borderTopWidth - paddingTop - paddingBottom;
-  }
+function getHeight(el) {
+  const styles = window.getComputedStyle(el);
+  const height = el.offsetHeight;
+  const borderTopWidth = parseFloat(styles.borderTopWidth);
+  const borderBottomWidth = parseFloat(styles.borderBottomWidth);
+  const paddingTop = parseFloat(styles.paddingTop);
+  const paddingBottom = parseFloat(styles.paddingBottom);
+  return (
+    height - borderBottomWidth - borderTopWidth - paddingTop - paddingBottom
+  );
+}
 
-  // С точностью до целого числа（когда `border-box`, это `height - border`; когда `content-box`, это `height + padding`）
-  el.clientHeight;
+// С точностью до целого числа（когда `border-box`, это `height - border`; когда `content-box`, это `height + padding`）
+el.clientHeight;
 
-  // С точностью до десятых（когда `border-box`, это `height`; когда `content-box`, это `height + padding + border`）
-  el.getBoundingClientRect().height;
+// С точностью до десятых（когда `border-box`, это `height`; когда `content-box`, это `height + padding + border`）
+el.getBoundingClientRect().height;
 ```
 
 ### Позиция и смещение
 
-__Получить текущие координаты элемента относительно смещения его родителя__
+**Получить текущие координаты элемента относительно смещения его родителя**
 
 ```javascript
   { left: el.offsetLeft, top: el.offsetTop }
 ```
 
-__Получить текущие координаты элемента относительно документа__
+**Получить текущие координаты элемента относительно документа**
 
 ```javascript
-  function getOffset (el) {
+function getOffset(el) {
   const box = el.getBoundingClientRect();
-    return {
-      top: box.top + window.pageYOffset - document.documentElement.clientTop,
-      left: box.left + window.pageXOffset - document.documentElement.clientLeft
-    };
-  }
+  return {
+    top: box.top + window.pageYOffset - document.documentElement.clientTop,
+    left: box.left + window.pageXOffset - document.documentElement.clientLeft
+  };
+}
 ```
 
-__Позициия скролла__
+**Позициия скролла**
 
 ```javascript
-  (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+(document.documentElement && document.documentElement.scrollTop) ||
+  document.body.scrollTop;
 ```
 
 ### Events
 
-+ On
+- On
 
 ```javascript
 el.addEventListener(eventName, eventHandler);
 ```
 
-+ Off
+- Off
 
 ```javascript
 el.removeEventListener(eventName, eventHandler);
 ```
-+ Document ready
-```javascript
- document.addEventListener('DOMContentLoaded', fn);
- ```
 
-+ Trigger Custom Event
+- Document ready
 
 ```javascript
- const event = new CustomEvent('my-event', {detail: {some: 'data'}});
- el.dispatchEvent(event);
+document.addEventListener("DOMContentLoaded", fn);
 ```
 
-+ Trigger Native Event
+- Trigger Custom Event
 
 ```javascript
-const event = document.createEvent('HTMLEvents');
-event.initEvent('change', true, false);
+const event = new CustomEvent("my-event", { detail: { some: "data" } });
 el.dispatchEvent(event);
 ```
 
-### Утилиты 
+- Trigger Native Event
 
-+ Trim
+```javascript
+const event = document.createEvent("HTMLEvents");
+event.initEvent("change", true, false);
+el.dispatchEvent(event);
+```
+
+### Утилиты
+
+- Trim
 
 ```javascript
 string.trim();
 ```
 
-+ isArray
+- isArray
 
 ```javascript
 Array.isArray(array);
 ```
 
-+ Проверка на содержание непосредственно child элемента
+- Проверка на содержание непосредственно child элемента
 
 ```javascript
 el !== child && el.contains(child);
 ```
 
-+ Проверка на содержание selector элемента
+- Проверка на содержание selector элемента
 
 ```javascript
-el.querySelector(selector) !== null
+el.querySelector(selector) !== null;
 ```
 
-+ Фильтрация
+- Фильтрация
 
 ```javascript
 Array.prototype.filter.call(document.querySelectorAll(selector), filterFn);
