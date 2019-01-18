@@ -234,7 +234,7 @@ window.document.documentElement.clientHeight;
 window.innerHeight;
 ```
 
-** Window height **
+**Window height**
 
 ```javascript
 const body = document.body;
@@ -248,7 +248,7 @@ const height = Math.max(
 );
 ```
 
-** Element height **
+**Element height**
 
 ```javascript
 function getHeight(el) {
