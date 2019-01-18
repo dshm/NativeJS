@@ -112,15 +112,15 @@ function parentsUntil(el, selector, filter) {
 
 ### DOM node manipulation
 
-**Перемещение/вставка элементов**
+**Moving / Inserting Items**
 
-- Вставка дочернего элемента в конец родителя
+- Insert child at end of parent
 
 ```javascript
 parent.appendChild(el);
 ```
 
-- Вставка дочернего элемента в начало родителя
+- Inserting a child at the beginning of the parent
 
 ```javascript
 parent.insertBefore(el, parent.firstChild);
@@ -128,46 +128,46 @@ parent.insertBefore(el, parent.firstChild);
 
 - insertAdjacent
 
-Метод insertAdjacentHTML позволяет вставлять произвольный HTML в любое место документа, в том числе и между узлами!
+The insertAdjacentHTML method allows you to insert arbitrary HTML anywhere in the document, including between nodes!
 
 ```javascript
 elem.insertAdjacentHTML(where, html);
 ```
 
-html cтрока HTML, которую нужно вставить
-where - Куда по отношению к elem вставлять строку. Всего четыре варианта:
+`html` HTML string to insert
+`where` - where in relation to elem to insert a line. Only four options:
 
-1. `beforeBegin` -- перед `elem`.
-2. `afterBegin` -- внутрь `elem`, в самое начало.
-3. `beforeEnd` -- внутрь `elem`, в конец.
-4. `afterEnd` -- после `elem`.
+1. `beforeBegin` -- before `elem`.
+2. `afterBegin` -- after `elem`, to the beginning.
+3. `beforeEnd` -- inside `elem`, in the end.
+4. `afterEnd` -- after `elem`.
 
-**Склонировать элемент**
+**Clone element**
 
 ```javascript
 el.cloneNode(true);
 ```
 
-**Удалить элемент**
+**Delete item**
 
 ```javascript
-el.remove(); // не поддерживаеться в IE
+el.remove(); // not supported in IE
 el.parentNode.removeChild(el); // IE 8+
 ```
 
-**Получить внутренний HTML**
+**Get internal HTML**
 
 ```javascript
 el.innerHTML;
 ```
 
-**Получить серриализированный elem HTML**
+**Get the HTML serialized elem**
 
 ```javascript
 element.outerHTML;
 ```
 
-**Получить текстовый узел**
+**Get text node**
 
 ```javascript
 el.textContent;
@@ -175,7 +175,7 @@ el.textContent;
 
 ---
 
-### Манипуляция с свойствами и атрибутами
+### Manipulation of properties and attributes
 
 **Input/Textarea**
 
@@ -183,7 +183,7 @@ el.textContent;
 el.value;
 ```
 
-\_\_Получить индекс e.currentTarget среди тех же елементов
+Get e.currentTarget index among the same items
 
 ```javascript
 Array.prototype.indexOf.call(
@@ -192,28 +192,28 @@ Array.prototype.indexOf.call(
 );
 ```
 
-**Получить значение атрибута и изменение его**
+**Get attribute value and change it**
 
 ```javascript
 el.getAttribute("foo");
 el.setAttribute("foo", "bar");
 ```
 
-### СSS и операция с классами
+### CSS and class operation
 
-**Получить стили**
+**Get styles**
 
 ```javascript
 getComputedStyle(el)[ruleName];
 ```
 
-**Присвоение style**
+**Adding style**
 
 ```javascript
 el.style.color = "#f01";
 ```
 
-**Добавить/Удалить/Переключить/Проверить на сушествование class**
+**Add/Remove/Toggle/Check if contains className**
 
 ```javascript
 el.classList.add(className);
@@ -222,19 +222,19 @@ el.classList.toggle(className);
 el.classList.contains(className);
 ```
 
-### Ширина и Высота
+### Width and Height
 
-**Ширина окна**
+**Window width**
 
 ```javascript
-// вместе с полосой прокрутки
+// together with scroll bar
 window.document.documentElement.clientHeight;
 
-// без полосы прокрутки, ведет себя как jQuery
+// without scrollbar, behaves like jQuery
 window.innerHeight;
 ```
 
-**Высота окна**
+** Window height **
 
 ```javascript
 const body = document.body;
@@ -248,7 +248,7 @@ const height = Math.max(
 );
 ```
 
-**Высота элемента**
+** Element height **
 
 ```javascript
 function getHeight(el) {
@@ -263,22 +263,22 @@ function getHeight(el) {
   );
 }
 
-// С точностью до целого числа（когда `border-box`, это `height - border`; когда `content-box`, это `height + padding`）
+// Up to an integer （when `border-box` is` height - border`; when `content box` is` height + padding`）
 el.clientHeight;
 
-// С точностью до десятых（когда `border-box`, это `height`; когда `content-box`, это `height + padding + border`）
+// Accurate to the tenth （when `border-box` is` height`; when `content-box` is` height + padding + border`）
 el.getBoundingClientRect().height;
 ```
 
-### Позиция и смещение
+### Position and offset
 
-**Получить текущие координаты элемента относительно смещения его родителя**
+** Get the current coordinates of the element relative to the offset of its parent **
 
 ```javascript
   { left: el.offsetLeft, top: el.offsetTop }
 ```
 
-**Получить текущие координаты элемента относительно документа**
+** Get the current coordinates of the item relative to the document **
 
 ```javascript
 function getOffset(el) {
@@ -290,7 +290,7 @@ function getOffset(el) {
 }
 ```
 
-**Позициия скролла**
+** Scroll Position **
 
 ```javascript
 (document.documentElement && document.documentElement.scrollTop) ||
@@ -332,7 +332,7 @@ event.initEvent("change", true, false);
 el.dispatchEvent(event);
 ```
 
-### Утилиты
+### Utilities
 
 - Trim
 
@@ -346,19 +346,19 @@ string.trim();
 Array.isArray(array);
 ```
 
-- Проверка на содержание непосредственно child элемента
+- Check for the contents of the child element itself
 
 ```javascript
 el !== child && el.contains(child);
 ```
 
-- Проверка на содержание selector элемента
+- Check for the content of the selector element
 
 ```javascript
 el.querySelector(selector) !== null;
 ```
 
-- Фильтрация
+- Filtering
 
 ```javascript
 Array.prototype.filter.call(document.querySelectorAll(selector), filterFn);
